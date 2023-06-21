@@ -48,7 +48,7 @@ const config: HardhatUserConfig = {
       chainId: 7777777,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
     },
-    zoraTestnet: {
+    "zora-testnet": {
       url: "https://testnet.rpc.zora.co",
       chainId: 999,
       accounts: [DEPLOYER_PRIVATE_KEY as string],

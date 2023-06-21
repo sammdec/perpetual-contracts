@@ -6,6 +6,10 @@
   "license": "MIT",
   "scripts": {
     "build": "hardhat compile",
+    "deploy:goerli": "hardhat deploy --network goerli",
+    "deploy:mainnet": "hardhat deploy --network mainnet",
+    "deploy:zora": "hardhat deploy --network zora",
+    "deploy:zora-testnet": "hardhat deploy --network zora-testnet",
     "test": "hardhat test"
   },
   "devDependencies": {
