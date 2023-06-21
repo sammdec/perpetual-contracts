@@ -1,0 +1,5 @@
+{
+  "semi": false,
+  "plugins": ["prettier-plugin-solidity"],
+  "overrides": [{ "files": "*.sol", "options": { "printWidth": 160 } }]
+}
