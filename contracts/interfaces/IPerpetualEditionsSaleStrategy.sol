@@ -9,6 +9,8 @@ interface IPerpetualEditionsSaleStrategy {
         string baseURI;
         /// @notice Funds recipient (0 if no different funds recipient than the contract global)
         address fundsRecipient;
+        /// @notice Duration of the token sale
+        uint64 duration;
     }
 
     struct SalesConfig {

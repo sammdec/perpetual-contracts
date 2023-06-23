@@ -92,6 +92,7 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         }
       )
 
@@ -131,6 +132,7 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         }
       )
 
@@ -174,6 +176,7 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         }
       )
 
@@ -251,6 +254,7 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         }
       )
 
@@ -261,8 +265,102 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         })
       ).to.be.revertedWithCustomError(perpetualEditions, "NotOwnerOfContract")
+    })
+
+    it("Should allow for different durations for each contract", async function () {
+      const { nft1155, perpetualEditions, otherAccount } = await loadFixture(
+        createContractFixture
+      )
+
+      const createContractConfigTx = await perpetualEditions.setContractConfig(
+        nft1155,
+        {
+          totalTokens: MaxUint256,
+          baseURI: "https://test-api.com/",
+          fundsRecipient: ZeroAddress,
+          duration: 1 * 60 * 60,
+        }
+      )
+
+      const createEditionTx = await perpetualEditions
+        .connect(otherAccount)
+        .createToken(
+          nft1155,
+          {
+            maxSupply: 1_000,
+            maxTokensPerAddress: 100,
+            pricePerToken: parseEther("0.01"),
+          },
+          ""
+        )
+
+      await createEditionTx.wait()
+
+      const nextTokenId = await nft1155.nextTokenId()
+
+      expect(nextTokenId).to.equal(2)
+
+      // Move ahead an hour
+      await time.increase(1 * 60 * 60)
+
+      await createContractConfigTx.wait()
+
+      const createEdition2Tx = await perpetualEditions
+        .connect(otherAccount)
+        .createToken(
+          nft1155,
+          {
+            maxSupply: 1_000,
+            maxTokensPerAddress: 100,
+            pricePerToken: parseEther("0.01"),
+          },
+          ""
+        )
+
+      await createEdition2Tx.wait()
+
+      const nextTokenId2 = await nft1155.nextTokenId()
+
+      expect(nextTokenId2).to.equal(3)
+
+      // Move ahead 30 mins
+      await time.increase(30 * 60)
+
+      await expect(
+        perpetualEditions.connect(otherAccount).createToken(
+          nft1155,
+          {
+            maxSupply: 1_000,
+            maxTokensPerAddress: 100,
+            pricePerToken: parseEther("0.01"),
+          },
+          ""
+        )
+      ).to.be.revertedWithCustomError(perpetualEditions, "SaleStillActive")
+
+      // Move ahead 30 mins
+      await time.increase(30 * 60)
+
+      const createEdition3Tx = await perpetualEditions
+        .connect(otherAccount)
+        .createToken(
+          nft1155,
+          {
+            maxSupply: 1_000,
+            maxTokensPerAddress: 100,
+            pricePerToken: parseEther("0.01"),
+          },
+          ""
+        )
+
+      await createEdition3Tx.wait()
+
+      const nextTokenId3 = await nft1155.nextTokenId()
+
+      expect(nextTokenId3).to.equal(4)
     })
   })
 
@@ -278,6 +376,7 @@ describe("PerpetualSalesStrategy", function () {
           totalTokens: MaxUint256,
           baseURI: "https://test-api.com/",
           fundsRecipient: ZeroAddress,
+          duration: 24 * 60 * 60,
         }
       )
 

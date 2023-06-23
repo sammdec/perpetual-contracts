@@ -18,8 +18,6 @@ import "hardhat/console.sol";
 contract PerpetualEditionsSaleStrategy is IPerpetualEditionsSaleStrategy, SaleStrategy, LimitedMintPerAddress {
     using SaleCommandHelper for ICreatorCommands.CommandSet;
 
-    uint64 constant EDITION_DURATION = 86400;
-
     // target (nft contract) -> tokenId -> settings
     mapping(address => mapping(uint256 => SalesConfig)) internal salesConfigs;
     // target (nft contract) -> settings
@@ -127,7 +125,7 @@ contract PerpetualEditionsSaleStrategy is IPerpetualEditionsSaleStrategy, SaleSt
 
         SalesConfig memory salesConfig = SalesConfig({
             saleStart: uint64(block.timestamp),
-            saleEnd: uint64(block.timestamp) + EDITION_DURATION,
+            saleEnd: uint64(block.timestamp) + contractConfig.duration,
             maxTokensPerAddress: salesOptions.maxTokensPerAddress,
             pricePerToken: salesOptions.pricePerToken,
             creator: msg.sender
