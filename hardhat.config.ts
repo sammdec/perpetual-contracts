@@ -55,13 +55,13 @@ const config: HardhatUserConfig = {
       url: "https://rpc.zora.co",
       chainId: 7777777,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
-      gasPrice: 100000000000,
+      gasPrice: 100_00_00_00_00,
     },
     "zora-testnet": {
       url: "https://testnet.rpc.zora.co",
       chainId: 999,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
-      gasPrice: 100000000000,
+      gasPrice: 100_00_00_00_00,
     },
   },
   namedAccounts: {
