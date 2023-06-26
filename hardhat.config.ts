@@ -13,7 +13,15 @@ const {
 } = process.env
 
 const config: HardhatUserConfig = {
-  solidity: { compilers: [{ version: "0.8.18" }, { version: "0.8.17" }] },
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.18",
+        settings: { optimizer: { enabled: true, runs: 5000 } },
+      },
+      { version: "0.8.17" },
+    ],
+  },
   networks: {
     hardhat: {
       forking: {
@@ -47,18 +55,23 @@ const config: HardhatUserConfig = {
       url: "https://rpc.zora.co",
       chainId: 7777777,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
-      verify: {},
+      gasPrice: 100000000000,
     },
     "zora-testnet": {
       url: "https://testnet.rpc.zora.co",
       chainId: 999,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
+      gasPrice: 100000000000,
     },
   },
   namedAccounts: {
     deployer: 0,
   },
   etherscan: {
+    apiKey: {
+      zora: "zora",
+      "zora-testnet": "zora-testnet",
+    },
     customChains: [
       {
         network: "zora",
