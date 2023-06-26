@@ -4,14 +4,7 @@ import {
 } from "@nomicfoundation/hardhat-toolbox/network-helpers"
 import { expect } from "chai"
 import { ethers } from "hardhat"
-import {
-  AbiCoder,
-  MaxUint256,
-  ZeroAddress,
-  ZeroHash,
-  encodeBytes32String,
-  parseEther,
-} from "ethers"
+import { AbiCoder, MaxUint256, ZeroAddress, parseEther } from "ethers"
 
 describe("PerpetualSalesStrategy", function () {
   // We define a fixture to reuse the same setup in every test.

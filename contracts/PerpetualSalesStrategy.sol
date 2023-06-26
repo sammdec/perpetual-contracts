@@ -159,7 +159,7 @@ contract PerpetualEditionsSaleStrategy is IPerpetualEditionsSaleStrategy, SaleSt
     }
 
     /// @notice Returns the sale config for a given token
-    function getSaleConfig(address tokenContract, uint256 tokenId) external view returns (SalesConfig memory) {
+    function sale(address tokenContract, uint256 tokenId) external view returns (SalesConfig memory) {
         return salesConfigs[tokenContract][tokenId];
     }
 

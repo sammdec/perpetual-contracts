@@ -10,6 +10,7 @@
     "deploy:mainnet": "hardhat deploy --network mainnet",
     "deploy:zora": "hardhat deploy --network zora",
     "deploy:zora-testnet": "hardhat deploy --network zora-testnet",
+    "hh": "hardhat",
     "test": "hardhat test"
   },
   "devDependencies": {

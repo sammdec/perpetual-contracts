@@ -1,27 +1,63 @@
-import { ethers } from "hardhat";
+import { MaxUint256, ZeroAddress, parseEther } from "ethers"
+import { ethers, deployments, getNamedAccounts } from "hardhat"
+
+const nftContractAddress = "0x925e0a3f97b13fdb833f87fa2c5eedfca231be9b"
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const { execute } = deployments
+  const { deployer } = await getNamedAccounts()
+  const nftContract = await ethers.getContractAt(
+    "IZoraCreator1155",
+    nftContractAddress
+  )
 
-  const lockedAmount = ethers.parseEther("0.001");
+  const perpetualEditionsContract = await deployments.get(
+    "PerpetualEditionsSaleStrategy"
+  )
 
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  const permissionTx = await nftContract.addPermission(
+    0,
+    perpetualEditionsContract.address,
+    2 ** 2
+  )
 
-  await lock.waitForDeployment();
+  await permissionTx.wait()
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  console.log("Permission added")
+
+  await execute(
+    "PerpetualEditionsSaleStrategy",
+    { from: deployer },
+    "setContractConfig",
+    nftContractAddress,
+    {
+      totalTokens: MaxUint256,
+      baseURI: "https://test-api.com/",
+      fundsRecipient: ZeroAddress,
+      duration: 24 * 60 * 60,
+    }
+  )
+
+  console.log("Contract config set")
+  await execute(
+    "PerpetualEditionsSaleStrategy",
+    { from: deployer },
+    "createToken",
+    nftContractAddress,
+    {
+      maxSupply: 1_000,
+      maxTokensPerAddress: 100,
+      pricePerToken: parseEther("0.01"),
+    },
+    ""
+  )
+
+  console.log("Token created")
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  console.error(error)
+  process.exitCode = 1
+})
