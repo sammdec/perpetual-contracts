@@ -47,6 +47,7 @@ const config: HardhatUserConfig = {
       url: "https://rpc.zora.co",
       chainId: 7777777,
       accounts: [DEPLOYER_PRIVATE_KEY as string],
+      verify: {},
     },
     "zora-testnet": {
       url: "https://testnet.rpc.zora.co",
@@ -56,6 +57,26 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: {
     deployer: 0,
+  },
+  etherscan: {
+    customChains: [
+      {
+        network: "zora",
+        chainId: 7777777,
+        urls: {
+          apiURL: "https://explorer.zora.energy/api",
+          browserURL: "https://explorer.zora.energy",
+        },
+      },
+      {
+        network: "zora-testnet",
+        chainId: 999,
+        urls: {
+          apiURL: "https://testnet.explorer.zora.energy/api",
+          browserURL: "https://testnet.explorer.zora.energy",
+        },
+      },
+    ],
   },
 }
 

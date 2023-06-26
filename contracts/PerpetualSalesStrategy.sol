@@ -10,8 +10,6 @@ import {IPerpetualEditionsSaleStrategy} from "./interfaces/IPerpetualEditionsSal
 import {ICreatorCommands} from "./interfaces/zora/ICreatorCommands.sol";
 import {IZoraCreator1155} from "./interfaces/zora/IZoraCreator1155.sol";
 
-import "hardhat/console.sol";
-
 /// @title Perpetual editions sale strategy
 /// @notice A sales strategy for ZoraCreator that enables perpetual editions
 /// @author @sammdec
