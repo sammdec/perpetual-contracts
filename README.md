@@ -37,6 +37,7 @@ Those are all of the one-off setup steps required, the following steps will be r
 ## Addresses
 
 Zora - `0x716453979dF2785920c0A183Af370fC69151A7D5`
+
 Zora testnet - `0x00892d11Aa7914400D7A121c5FB63999910Fc53D`
 
 ## Quickstart
